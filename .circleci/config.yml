@@ -59,12 +59,14 @@ jobs:
 workflows:
   build_and_test:
     jobs:
-      - build:
+      - build
       - test:
           requires:
             - build
       - publish:
           context: npm
+          requires:
+            - test
           filters:
             branches:
               only:
