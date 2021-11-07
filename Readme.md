@@ -17,6 +17,12 @@ You will need the following dependencies installed on your machine. Currently on
 -   imagemagick
 -   imagemagick-dev
 
+## Installation
+
+```
+npm i imagemagick-compare
+```
+
 ## Usage
 
 ### Version
