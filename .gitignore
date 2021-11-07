@@ -1,3 +1,5 @@
+.npmrc
+
 dist/
 build/
 node_modules/
