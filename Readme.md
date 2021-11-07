@@ -74,7 +74,7 @@ compare(originalImage, compareWith, 'SSIM', (err, res) => {
 #### Sync usage
 
 ```ts
-import { compare } from 'imagemagick-compare';
+import { compareSync } from 'imagemagick-compare';
 
 // ...
 
