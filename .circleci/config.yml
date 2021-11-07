@@ -1,0 +1,50 @@
+version: 2.1
+
+jobs:
+  build:
+    docker:
+      - image: alpine
+    steps:
+      - checkout
+      - run: |
+          apk add --no-cache \
+            python3 \
+            pkgconfig \
+            make \
+            g++ \
+            imagemagick imagemagick-dev \
+            nodejs \
+            npm
+      - restore_cache:
+          keys:
+            - node-modules-{{ checksum "package-lock.json" }}
+            - node-modules-
+      - run: npm i
+      - save_cache:
+          key: node-modules-{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
+      - run: npm run build
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
+  test:
+    docker:
+      - image: alpine
+    steps:
+      - attach_workspace:
+          at: .
+      - run: |
+          apk add --no-cache \
+            imagemagick imagemagick-dev \
+            nodejs
+      - run: |
+          npm run test
+
+workflows:
+  build_and_test:
+    jobs:
+      - build
+      - test
