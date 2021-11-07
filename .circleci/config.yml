@@ -44,10 +44,28 @@ jobs:
       - run: |
           npm run test
 
+  publish:
+    docker:
+      - image: alpine
+    steps:
+      - attach_workspace:
+          at: .
+      - run: |
+          apk add --no-cache \
+            npm
+      - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
+      - run: npm publish
+
 workflows:
   build_and_test:
     jobs:
-      - build
+      - build:
       - test:
           requires:
             - build
+      - publish:
+          context: npm
+          filters:
+            branches:
+              only:
+                - main

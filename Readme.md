@@ -1,4 +1,4 @@
-# imagemagick-compare
+# imagemagick-compare [![CircleCI](https://circleci.com/gh/joberthel/imagemagick-compare/tree/main.svg?style=svg)](https://circleci.com/gh/joberthel/imagemagick-compare/tree/main)
 
 [ImageMagick](http://www.imagemagick.org/)'s [Compare](https://imagemagick.org/script/compare.php) binding for [Node](http://nodejs.org/).
 
