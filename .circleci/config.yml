@@ -39,7 +39,8 @@ jobs:
       - run: |
           apk add --no-cache \
             imagemagick imagemagick-dev \
-            nodejs
+            nodejs \
+            npm
       - run: |
           npm run test
 
