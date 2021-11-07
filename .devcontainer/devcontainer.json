@@ -1,0 +1,9 @@
+{
+    "name": "imagemagick-compare",
+    "context": "..",
+    "dockerFile": "../Dockerfile",
+    "settings": {},
+    "extensions": [
+        "esbenp.prettier-vscode"
+    ]
+}
