@@ -8,7 +8,7 @@
     "install": "node-gyp rebuild",
     "build": "tsc",
     "build:gyp": "node-gyp rebuild",
-    "test": "ts-mocha test/*.spec.ts",
+    "test": "ts-mocha --timeout 5000 test/*.spec.ts",
     "test:coverage": "nyc npm test",
     "coverage": "codecov"
   },
