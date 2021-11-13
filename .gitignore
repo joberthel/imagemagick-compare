@@ -1,5 +1,5 @@
 .npmrc
-
+test-results.xml
 
 dist/
 build/

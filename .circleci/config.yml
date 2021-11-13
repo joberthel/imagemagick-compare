@@ -44,6 +44,8 @@ jobs:
       - run: |
           npm run test:coverage
           npm run coverage
+      - store_test_results:
+          path: .
 
   publish:
     machine: true
