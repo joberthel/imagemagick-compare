@@ -27,6 +27,18 @@ const lib = require('../build/Release/compare.node');
  */
 export type CompareMetric = 'AE' | 'DSSIM' | 'FUZZ' | 'MAE' | 'MEPP' | 'MSE' | 'NCC' | 'PAE' | 'PHASH' | 'PSNR' | 'RMSE' | 'SSIM';
 
+/**
+ * Metric is defaulting to SSIM.
+ * Additional options like radius, sigma, k1 and k2 options will only be used for SSIM and DSSIM metrics.
+ */
+export type CompareOptions = {
+    metric?: CompareMetric;
+    radius?: number;
+    sigma?: number;
+    k1?: number;
+    k2?: number;
+};
+
 export type CompareCallback = (err: Error | undefined, res: number) => void;
 
 /**
@@ -41,17 +53,23 @@ export function version(): string {
  * Compares two images using Magick++ assynchronously.
  * @param originalImage Image buffer of the original image
  * @param compareWith Image buffer of the image to compare with
- * @param metric Defaulting to "SSIM"
+ * @param options Define metric options
  * @param callback Optional callback function if you don't want to use promises
  * @returns Promise with metric result as a number
  */
-export function compare(originalImage: Buffer, compareWith: Buffer, metric: CompareMetric = 'SSIM', callback?: CompareCallback): Promise<number> {
+export function compare(originalImage: Buffer, compareWith: Buffer, options: CompareOptions = {}, callback?: CompareCallback): Promise<number> {
     return new Promise((resolve, reject) => {
+        const { metric, radius, sigma, k1, k2 } = options;
+
         lib.compare(
             {
                 originalImage,
                 compareWith,
-                metric
+                metric,
+                radius,
+                sigma,
+                k1,
+                k2
             },
             (err: Error | undefined, res: number) => {
                 if (typeof callback === 'function') {
@@ -72,13 +90,19 @@ export function compare(originalImage: Buffer, compareWith: Buffer, metric: Comp
  * Compares two images using Magick++ synchronously.
  * @param originalImage Image buffer of the original image
  * @param compareWith Image buffer of the image to compare with
- * @param metric Defaulting to "SSIM"
+ * @param options Define metric options
  * @returns Metric result as a number
  */
-export function compareSync(originalImage: Buffer, compareWith: Buffer, metric: CompareMetric = 'SSIM'): number {
+export function compareSync(originalImage: Buffer, compareWith: Buffer, options: CompareOptions = {}): number {
+    const { metric, radius, sigma, k1, k2 } = options;
+
     return lib.compare({
         originalImage,
         compareWith,
-        metric
+        metric,
+        radius,
+        sigma,
+        k1,
+        k2
     });
 }

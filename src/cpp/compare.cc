@@ -11,6 +11,11 @@ struct compare_im_ctx {
     char* secondImageData;
     size_t secondImageLength;
 
+    double radius = NULL;
+    double sigma = NULL;
+    double k1 = NULL;
+    double k2 = NULL;
+
     std::string metric;
 
     compare_im_ctx() {}
@@ -32,6 +37,22 @@ void DoCompare(uv_work_t* req) {
     } catch (...) {
         context->error = std::string("unhandled error with original image");
         return;
+    }
+
+    if (context->radius != NULL) {
+        firstImage.artifact("compare:ssim-radius", std::to_string(context->radius));
+    }
+
+    if (context->sigma != NULL) {
+        firstImage.artifact("compare:ssim-sigma", std::to_string(context->sigma));
+    }
+
+    if (context->k1 != NULL) {
+        firstImage.artifact("compare:ssim-k1", std::to_string(context->k1));
+    }
+
+    if (context->k2 != NULL) {
+        firstImage.artifact("compare:ssim-k2", std::to_string(context->k2));
     }
 
     Magick::Image secondImage;
@@ -165,6 +186,26 @@ NAN_METHOD(Compare) {
 
     Local<Value> metricValue = Nan::Get(obj, Nan::New<String>("metric").ToLocalChecked()).ToLocalChecked();
     context->metric = !metricValue->IsUndefined() ? *Nan::Utf8String(metricValue) : "SSIM";
+
+    Local<Value> radiusValue = Nan::Get(obj, Nan::New<String>("radius").ToLocalChecked()).ToLocalChecked();
+    if (!radiusValue->IsUndefined()) {
+        context->radius = Nan::To<Number>(radiusValue).ToLocalChecked()->Value();
+    }
+
+    Local<Value> sigmaValue = Nan::Get(obj, Nan::New<String>("sigma").ToLocalChecked()).ToLocalChecked();
+    if (!sigmaValue->IsUndefined()) {
+        context->sigma = Nan::To<Number>(sigmaValue).ToLocalChecked()->Value();
+    }
+
+    Local<Value> k1Value = Nan::Get(obj, Nan::New<String>("k1").ToLocalChecked()).ToLocalChecked();
+    if (!k1Value->IsUndefined()) {
+        context->k1 = Nan::To<Number>(k1Value).ToLocalChecked()->Value();
+    }
+
+    Local<Value> k2Value = Nan::Get(obj, Nan::New<String>("k2").ToLocalChecked()).ToLocalChecked();
+    if (!k2Value->IsUndefined()) {
+        context->k2 = Nan::To<Number>(k2Value).ToLocalChecked()->Value();
+    }
 
     uv_work_t* req = new uv_work_t();
     req->data = context;

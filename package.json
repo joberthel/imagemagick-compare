@@ -1,6 +1,6 @@
 {
   "name": "imagemagick-compare",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Compare images with NodeJS using ImageMagick's Magick++",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
