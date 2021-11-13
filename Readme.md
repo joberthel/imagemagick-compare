@@ -53,7 +53,7 @@ const original = fs.readFileSync(__dirname + '/assets/Lenna_orig.png');
 const compareWith = fs.readFileSync(__dirname + '/assets/Lenna_diff.png');
 const options = { metric: 'SSIM', radius: 2 };
 
-compare(originalImage, compareWith, options).then(res => console.log);
+compare(originalImage, compareWith, options).then(res => console.log(res));
 ```
 
 #### Async usage
