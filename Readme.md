@@ -41,7 +41,7 @@ Compares two images using Magick++ and returns the result as a number.
 
 -   `originalImage`: Image buffer of the original image.
 -   `compareWith`: Image buffer of the image to compare with.
--   `metric`: Defaults to `SSIM`. List of supported metrics [below](#supported-metrics).
+-   `options`: Object with metric options. More details [below](#compare-options).
 
 #### Promise usage
 
@@ -51,8 +51,9 @@ import { compare } from 'imagemagick-compare';
 
 const original = fs.readFileSync(__dirname + '/assets/Lenna_orig.png');
 const compareWith = fs.readFileSync(__dirname + '/assets/Lenna_diff.png');
+const options = { metric: 'SSIM', radius: 2 };
 
-compare(originalImage, compareWith, 'SSIM').then(res => console.log);
+compare(originalImage, compareWith, options).then(res => console.log);
 ```
 
 #### Async usage
@@ -62,7 +63,7 @@ import { compare } from 'imagemagick-compare';
 
 // ...
 
-compare(originalImage, compareWith, 'SSIM', (err, res) => {
+compare(originalImage, compareWith, options, (err, res) => {
     if (typeof err !== 'undefined') {
         throw err;
     }
@@ -78,8 +79,16 @@ import { compareSync } from 'imagemagick-compare';
 
 // ...
 
-console.log(compareSync(originalImage, compareWith, 'SSIM'));
+console.log(compareSync(originalImage, compareWith, options));
 ```
+
+## Compare options
+
+-   `metric`: Defaults to `SSIM`. List of supported metrics [below](#supported-metrics).
+-   `radius`: Will only be used for `SSIM` and `DSSIM` metric.
+-   `sigma`: Will only be used for `SSIM` and `DSSIM` metric.
+-   `k1`: Will only be used for `SSIM` and `DSSIM` metric.
+-   `k2`: Will only be used for `SSIM` and `DSSIM` metric.
 
 ## Supported metrics
 

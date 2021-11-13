@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as chai from 'chai';
 import * as chaiAsPromised from 'chai-as-promised';
-import { version, compare, compareSync, CompareMetric } from '../src';
+import { version, compare, compareSync, CompareOptions } from '../src';
 
 chai.use(chaiAsPromised);
 
@@ -10,21 +10,23 @@ const { expect } = chai;
 const original = fs.readFileSync(__dirname + '/assets/Lenna_orig.png');
 const difference = fs.readFileSync(__dirname + '/assets/Lenna_diff.png');
 
-// Map of all metrics with expected result and accepted delta
-const metrics: { [key in CompareMetric]: [number, number] } = {
-    AE: [5580, 1],
-    FUZZ: [0.074, 0.001],
-    MAE: [0.01, 0.001],
-    MEPP: [508322356, 1],
-    NCC: [0.912, 0.001],
-    PAE: [0.816, 0.001],
-    PSNR: [22.607, 0.001],
-    PHASH: [7.663, 0.001],
-    MSE: [0.005, 0.001],
-    RMSE: [0.074, 0.001],
-    SSIM: [0.967, 0.001],
-    DSSIM: [0.016, 0.001]
-};
+const examples: { name: string; options: CompareOptions; result: number; delta: number }[] = [
+    { name: 'AE', options: { metric: 'AE' }, result: 5580, delta: 1 },
+    { name: 'FUZZ', options: { metric: 'FUZZ' }, result: 0.074, delta: 0.001 },
+    { name: 'MAE', options: { metric: 'MAE' }, result: 0.01, delta: 0.001 },
+    { name: 'MEPP', options: { metric: 'MEPP' }, result: 508322356, delta: 1 },
+    { name: 'NCC', options: { metric: 'NCC' }, result: 0.912, delta: 0.001 },
+    { name: 'PAE', options: { metric: 'PAE' }, result: 0.816, delta: 0.001 },
+    { name: 'PSNR', options: { metric: 'PSNR' }, result: 22.607, delta: 0.001 },
+    { name: 'PHASH', options: { metric: 'PHASH' }, result: 7.663, delta: 0.001 },
+    { name: 'MSE', options: { metric: 'MSE' }, result: 0.005, delta: 0.001 },
+    { name: 'RMSE', options: { metric: 'RMSE' }, result: 0.074, delta: 0.001 },
+    { name: 'SSIM', options: { metric: 'SSIM' }, result: 0.967, delta: 0.001 },
+    { name: 'DSSIM', options: { metric: 'DSSIM' }, result: 0.016, delta: 0.001 },
+    { name: 'DSSIM with radius, sigma, k1 and k2', options: { metric: 'DSSIM', radius: 2, sigma: 1, k1: 0.01, k2: 0.03 }, result: 0.012, delta: 0.001 },
+    { name: 'SSIM', options: { metric: 'SSIM' }, result: 0.967, delta: 0.001 },
+    { name: 'SSIM with radius, sigma, k1 and k2', options: { metric: 'SSIM', radius: 2, sigma: 1, k1: 0.01, k2: 0.03 }, result: 0.976, delta: 0.001 }
+];
 
 describe('version', () => {
     it('should return a version', () => {
@@ -47,7 +49,7 @@ describe('compare', () => {
         });
 
         it('should use callback', done => {
-            compare(original, original, 'SSIM', (err, res) => {
+            compare(original, original, {}, (err, res) => {
                 expect(err).to.be.undefined;
                 expect(res).to.equal(1);
                 done();
@@ -67,10 +69,10 @@ describe('compare', () => {
     });
 
     describe('should use defined metric', () => {
-        for (const metric in metrics) {
-            it(`should use ${metric}`, async () => {
-                expect(await compare(original, difference, metric as CompareMetric)).to.be.closeTo(metrics[metric][0], metrics[metric][1]);
-                expect(compareSync(original, difference, metric as CompareMetric)).to.be.closeTo(metrics[metric][0], metrics[metric][1]);
+        for (const example of examples) {
+            it(`should use ${example.name}`, async () => {
+                expect(await compare(original, difference, example.options)).to.be.closeTo(example.result, example.delta);
+                expect(compareSync(original, difference, example.options)).to.be.closeTo(example.result, example.delta);
             });
         }
     });
