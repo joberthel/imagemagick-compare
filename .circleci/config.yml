@@ -52,10 +52,15 @@ jobs:
       - attach_workspace:
           at: .
       - run: |
-          apk add --no-cache \
-            npm
-      - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
-      - run: npm publish
+          export COMMIT_MESSAGE="$(git log --format=oneline -n 1 $CIRCLE_SHA1)"
+
+          if [[ $COMMIT_MESSAGE == *"[skip npm]"* ]]; then
+            echo "Skipping npm publish."
+          else
+            apk add --no-cache npm
+            echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
+            npm publish
+          fi
 
 workflows:
   build_and_test:
@@ -72,3 +77,17 @@ workflows:
             branches:
               only:
                 - main
+
+  test_nightly:
+    triggers:
+      - schedule:
+          cron: '0 0 * * *'
+          filters:
+            branches:
+              only:
+                - main
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
