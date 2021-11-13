@@ -1,12 +1,17 @@
 import * as fs from 'fs';
-import { expect } from 'chai';
-import { version, compare, compareSync, CompareMetric } from '../dist';
+import * as chai from 'chai';
+import * as chaiAsPromised from 'chai-as-promised';
+import { version, compare, compareSync, CompareMetric } from '../src';
+
+chai.use(chaiAsPromised);
+
+const { expect } = chai;
 
 const original = fs.readFileSync(__dirname + '/assets/Lenna_orig.png');
 const difference = fs.readFileSync(__dirname + '/assets/Lenna_diff.png');
 
 // Map of all metrics with expected result and accepted delta
-const metrics = {
+const metrics: { [key in CompareMetric]: [number, number] } = {
     AE: [5580, 1],
     FUZZ: [0.074, 0.001],
     MAE: [0.01, 0.001],
@@ -30,7 +35,15 @@ describe('version', () => {
 describe('compare', () => {
     describe('should be callable', () => {
         it('should use promise', async () => {
-            expect(await compare(original, original, 'SSIM')).to.equal(1);
+            expect(await compare(original, original)).to.equal(1);
+        });
+
+        it('promise should reject', async () => {
+            // @ts-expect-error
+            await expect(compare()).to.eventually.be.rejectedWith(`compare()'s 1st argument should be a buffer instance`);
+            await expect(compare(null, difference)).to.eventually.be.rejectedWith(`compare()'s 1st argument should be a buffer instance`);
+            await expect(compare(original, null)).to.eventually.be.rejectedWith(`compare()'s 2nd argument should be a buffer instance`);
+            await expect(compare(original, Buffer.from([]))).to.eventually.be.rejected;
         });
 
         it('should use callback', done => {
@@ -42,7 +55,14 @@ describe('compare', () => {
         });
 
         it('should use sync', () => {
-            expect(compareSync(original, original, 'SSIM')).to.equal(1);
+            expect(compareSync(original, original)).to.equal(1);
+        });
+
+        it('sync should throw errors', async () => {
+            expect(compareSync.bind(null)).to.throw(`compare()'s 1st argument should be a buffer instance`);
+            expect(compareSync.bind(null, null, difference)).to.throw(`compare()'s 1st argument should be a buffer instance`);
+            expect(compareSync.bind(null, original, null)).to.throw(`compare()'s 2nd argument should be a buffer instance`);
+            expect(compareSync.bind(null, original, Buffer.from([]))).to.throw();
         });
     });
 
@@ -50,6 +70,7 @@ describe('compare', () => {
         for (const metric in metrics) {
             it(`should use ${metric}`, async () => {
                 expect(await compare(original, difference, metric as CompareMetric)).to.be.closeTo(metrics[metric][0], metrics[metric][1]);
+                expect(compareSync(original, difference, metric as CompareMetric)).to.be.closeTo(metrics[metric][0], metrics[metric][1]);
             });
         }
     });

@@ -42,7 +42,8 @@ jobs:
             nodejs \
             npm
       - run: |
-          npm run test
+          npm run test:coverage
+          npm run coverage
 
   publish:
     docker:

@@ -148,11 +148,11 @@ NAN_METHOD(Compare) {
     Local<Object> secondImageData = Local<Object>::Cast(Nan::Get(obj, Nan::New<String>("compareWith").ToLocalChecked()).ToLocalChecked());
 
     if (firstImageData->IsUndefined() || !Buffer::HasInstance(firstImageData)) {
-        return Nan::ThrowError("compare()'s 1st argument should have \"originalImage\" key with a Buffer instance");
+        return Nan::ThrowError("compare()'s 1st argument should be a buffer instance");
     }
 
     if (firstImageData->IsUndefined() || !Buffer::HasInstance(secondImageData)) {
-        return Nan::ThrowError("compare()'s 1st argument should have \"compareWith\" key with a Buffer instance");
+        return Nan::ThrowError("compare()'s 2nd argument should be a buffer instance");
     }
 
     compare_im_ctx* context = new compare_im_ctx();
