@@ -1,13 +1,16 @@
 {
   "name": "imagemagick-compare",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Compare images with NodeJS using ImageMagick's Magick++",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "install": "node-gyp rebuild",
     "build": "tsc",
-    "test": "ts-mocha test/*.spec.ts"
+    "build:gyp": "node-gyp rebuild",
+    "test": "ts-mocha test/*.spec.ts",
+    "test:coverage": "nyc npm test",
+    "coverage": "codecov"
   },
   "author": "Johannes Berthel",
   "repository": {
@@ -19,10 +22,15 @@
     "nan": "^2.15.0"
   },
   "devDependencies": {
+    "@types/chai": "^4.2.22",
+    "@types/chai-as-promised": "^7.1.4",
     "@types/mocha": "^9.0.0",
     "@types/node": "^16.11.6",
     "chai": "^4.3.4",
+    "chai-as-promised": "^7.1.1",
+    "codecov": "^3.8.3",
     "mocha": "^8.4.0",
+    "nyc": "^15.1.0",
     "ts-mocha": "^8.0.0",
     "typescript": "^4.4.4"
   },

@@ -1,4 +1,4 @@
-# imagemagick-compare [![CircleCI](https://img.shields.io/circleci/build/github/joberthel/imagemagick-compare/main)](https://circleci.com/gh/joberthel/imagemagick-compare/tree/main) ![TypeScript](https://img.shields.io/badge/Build%20With-TypeScript-blue) ![node-gyp](https://img.shields.io/badge/Build%20With-node--gyp-blue)
+# imagemagick-compare [![CircleCI](https://img.shields.io/circleci/build/github/joberthel/imagemagick-compare/main)](https://circleci.com/gh/joberthel/imagemagick-compare/tree/main) [![codecov](https://img.shields.io/codecov/c/gh/joberthel/imagemagick-compare?token=JSAR7F2AIF)](https://codecov.io/gh/joberthel/imagemagick-compare)
 
 [ImageMagick](http://www.imagemagick.org/)'s [Compare](https://imagemagick.org/script/compare.php) binding for [Node](http://nodejs.org/).
 
