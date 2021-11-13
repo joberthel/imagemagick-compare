@@ -46,8 +46,6 @@ jobs:
           npm run coverage
 
   publish:
-    docker:
-      - image: alpine
     steps:
       - attach_workspace:
           at: .
