@@ -46,6 +46,7 @@ jobs:
           npm run coverage
 
   publish:
+    machine: true
     steps:
       - attach_workspace:
           at: .
