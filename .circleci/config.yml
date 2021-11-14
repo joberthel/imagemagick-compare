@@ -50,7 +50,8 @@ jobs:
           path: ./coverage/lcov-report
 
   publish:
-    machine: true
+    docker:
+      - image: cimg/node:14.18
     steps:
       - attach_workspace:
           at: .
