@@ -61,7 +61,6 @@ jobs:
           if [[ $COMMIT_MESSAGE == *"[skip npm]"* ]]; then
             echo "Skipping npm publish."
           else
-            apt-get install -y npm
             echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
             npm publish
           fi
