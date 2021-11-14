@@ -24,7 +24,7 @@ describe('compare async', () => {
     });
 
     describe('error handling', () => {
-        it('should reject if no options are defined', done => {
+        it('should return error if no options are defined', done => {
             compare(null, null, undefined, (err, res) => {
                 expect(err).to.be.instanceOf(Error);
                 expect(err.message).to.equal(`compare()'s 1st argument should be a buffer instance`);
@@ -33,7 +33,7 @@ describe('compare async', () => {
             });
         });
 
-        it('should reject if first argument is no buffer', done => {
+        it('should return error if first argument is no buffer', done => {
             compare(null, difference, undefined, (err, res) => {
                 expect(err).to.be.instanceOf(Error);
                 expect(err.message).to.equal(`compare()'s 1st argument should be a buffer instance`);
@@ -42,7 +42,7 @@ describe('compare async', () => {
             });
         });
 
-        it('should reject if second argument is no buffer', done => {
+        it('should return error if second argument is no buffer', done => {
             compare(original, null, undefined, (err, res) => {
                 expect(err).to.be.instanceOf(Error);
                 expect(err.message).to.equal(`compare()'s 2nd argument should be a buffer instance`);
@@ -51,7 +51,7 @@ describe('compare async', () => {
             });
         });
 
-        it('should reject if buffer is no image', done => {
+        it('should return error if buffer is no image', done => {
             compare(original, Buffer.from([]), undefined, (err, res) => {
                 expect(err).to.be.instanceOf(Error);
                 expect(res).to.be.undefined;
@@ -59,7 +59,7 @@ describe('compare async', () => {
             });
         });
 
-        it('should reject if metric does not exist', done => {
+        it('should return error if metric does not exist', done => {
             // @ts-expect-error
             compare(original, difference, { metric: 'NOTDEFINED' }, (err, res) => {
                 expect(err).to.be.instanceOf(Error);

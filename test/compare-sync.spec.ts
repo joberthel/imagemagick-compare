@@ -16,23 +16,23 @@ describe('compare sync', () => {
     });
 
     describe('error handling', () => {
-        it('should reject if no options are defined', () => {
+        it('should throw error if no options are defined', () => {
             expect(compareSync.bind(null)).to.throw(`compare()'s 1st argument should be a buffer instance`);
         });
 
-        it('should reject if first argument is no buffer', () => {
+        it('should throw error if first argument is no buffer', () => {
             expect(compareSync.bind(null, null, difference)).to.throw(`compare()'s 1st argument should be a buffer instance`);
         });
 
-        it('should reject if second argument is no buffer', () => {
+        it('should throw error if second argument is no buffer', () => {
             expect(compareSync.bind(null, original, null)).to.throw(`compare()'s 2nd argument should be a buffer instance`);
         });
 
-        it('should reject if buffer is no image', () => {
+        it('should throw error if buffer is no image', () => {
             expect(compareSync.bind(null, original, Buffer.from([]))).to.throw();
         });
 
-        it('should reject if metric does not exist', () => {
+        it('should throw error if metric does not exist', () => {
             expect(compareSync.bind(null, original, difference, { metric: 'NOTDEFINED' })).to.throw('metric unknown');
         });
     });
