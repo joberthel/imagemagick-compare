@@ -46,6 +46,8 @@ jobs:
           npm run coverage
       - store_test_results:
           path: .
+      - store_artifacts:
+          path: ./coverage/lcov-report
 
   publish:
     machine: true

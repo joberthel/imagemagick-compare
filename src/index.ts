@@ -39,7 +39,7 @@ export type CompareOptions = {
     k2?: number;
 };
 
-export type CompareCallback = (err: Error | undefined, res: number) => void;
+export type CompareCallback = (err: Error | undefined, res: number | undefined) => void;
 
 /**
  *
@@ -57,32 +57,40 @@ export function version(): string {
  * @param callback Optional callback function if you don't want to use promises
  * @returns Promise with metric result as a number
  */
-export function compare(originalImage: Buffer, compareWith: Buffer, options: CompareOptions = {}, callback?: CompareCallback): Promise<number> {
+export function compare(originalImage: Buffer, compareWith: Buffer, options: CompareOptions = {}, callback?: CompareCallback): Promise<number | undefined> {
     return new Promise((resolve, reject) => {
         const { metric, radius, sigma, k1, k2 } = options;
 
-        lib.compare(
-            {
-                originalImage,
-                compareWith,
-                metric,
-                radius,
-                sigma,
-                k1,
-                k2
-            },
-            (err: Error | undefined, res: number) => {
-                if (typeof callback === 'function') {
-                    callback(err, res);
-                }
+        try {
+            lib.compare(
+                {
+                    originalImage,
+                    compareWith,
+                    metric,
+                    radius,
+                    sigma,
+                    k1,
+                    k2
+                },
+                (err: Error | undefined, res: number) => {
+                    if (typeof callback === 'function') {
+                        callback(err, res);
+                    }
 
-                if (typeof err !== 'undefined') {
-                    return reject(err);
-                }
+                    if (typeof err !== 'undefined') {
+                        return reject(err);
+                    }
 
-                resolve(res);
+                    resolve(res);
+                }
+            );
+        } catch (err) {
+            if (typeof callback === 'function') {
+                callback(err as Error, undefined);
             }
-        );
+
+            reject(err);
+        }
     });
 }
 

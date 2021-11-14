@@ -1,6 +1,6 @@
 {
   "name": "imagemagick-compare",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Compare images with NodeJS using ImageMagick's Magick++",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -8,8 +8,8 @@
     "install": "node-gyp rebuild",
     "build": "tsc",
     "build:gyp": "node-gyp rebuild",
-    "test": "ts-mocha --timeout 5000 --reporter mocha-junit-reporter test/*.spec.ts",
-    "test:coverage": "nyc npm test",
+    "test": "ts-mocha --parallel --timeout 5000 test/*.spec.ts",
+    "test:coverage": "nyc npm test -- --reporter mocha-junit-reporter",
     "coverage": "codecov"
   },
   "author": "Johannes Berthel",
