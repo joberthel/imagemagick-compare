@@ -29,6 +29,7 @@ export type CompareMetric = 'AE' | 'DSSIM' | 'FUZZ' | 'MAE' | 'MEPP' | 'MSE' | '
 
 /**
  * Metric is defaulting to SSIM.
+ *
  * Additional options like radius, sigma, k1 and k2 options will only be used for SSIM and DSSIM metrics.
  */
 export type CompareOptions = {
