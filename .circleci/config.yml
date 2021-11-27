@@ -17,11 +17,11 @@ jobs:
             npm
       - restore_cache:
           keys:
-            - node-modules-{{ checksum "package-lock.json" }}
-            - node-modules-
+            - node-modules-alpine-{{ checksum "package-lock.json" }}
+            - node-modules-alpine-
       - run: npm i
       - save_cache:
-          key: node-modules-{{ checksum "package-lock.json" }}
+          key: node-modules-alpine-{{ checksum "package-lock.json" }}
           paths:
             - node_modules
       - run: npm run build
@@ -65,6 +65,30 @@ jobs:
             npm publish
           fi
 
+  build-and-test-osx:
+    macos:
+      xcode: 11.3.0
+    steps:
+      - checkout
+      - run: brew install imagemagick
+      - restore_cache:
+          keys:
+            - node-modules-osx-{{ checksum "package-lock.json" }}
+            - node-modules-osx-
+      - run: npm i
+      - save_cache:
+          key: node-modules-osx-{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
+      - run: npm run build
+      - run: |
+          npm run test:coverage
+          npm run coverage
+      - store_test_results:
+          path: .
+      - store_artifacts:
+          path: ./coverage/lcov-report
+
 workflows:
   build_and_test:
     jobs:
@@ -72,10 +96,12 @@ workflows:
       - test:
           requires:
             - build
+      - build-and-test-osx
       - publish:
           context: npm
           requires:
             - test
+            - build-and-test-osx
           filters:
             branches:
               only:
@@ -94,3 +120,4 @@ workflows:
       - test:
           requires:
             - build
+      - build-and-test-osx
