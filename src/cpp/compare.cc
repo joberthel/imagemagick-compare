@@ -11,10 +11,10 @@ struct compare_im_ctx {
     char* secondImageData;
     size_t secondImageLength;
 
-    double radius = NULL;
-    double sigma = NULL;
-    double k1 = NULL;
-    double k2 = NULL;
+    double radius = 0;
+    double sigma = 0;
+    double k1 = 0;
+    double k2 = 0;
 
     std::string metric;
 
@@ -39,19 +39,19 @@ void DoCompare(uv_work_t* req) {
         return;
     }
 
-    if (context->radius != NULL) {
+    if (context->radius != 0) {
         firstImage.artifact("compare:ssim-radius", std::to_string(context->radius));
     }
 
-    if (context->sigma != NULL) {
+    if (context->sigma != 0) {
         firstImage.artifact("compare:ssim-sigma", std::to_string(context->sigma));
     }
 
-    if (context->k1 != NULL) {
+    if (context->k1 != 0) {
         firstImage.artifact("compare:ssim-k1", std::to_string(context->k1));
     }
 
-    if (context->k2 != NULL) {
+    if (context->k2 != 0) {
         firstImage.artifact("compare:ssim-k2", std::to_string(context->k2));
     }
 
