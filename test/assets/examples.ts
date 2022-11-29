@@ -9,7 +9,7 @@ export const examples: { name: string; options: CompareOptions; result: number; 
     { name: 'FUZZ', options: { metric: 'FUZZ' }, result: 0.074, delta: 0.001 },
     { name: 'MAE', options: { metric: 'MAE' }, result: 0.01, delta: 0.001 },
     { name: 'MEPP', options: { metric: 'MEPP' }, result: 508322356, delta: 1 },
-    { name: 'NCC', options: { metric: 'NCC' }, result: 0.912, delta: 0.001 },
+    { name: 'NCC', options: { metric: 'NCC' }, result: 0.910, delta: 0.001 },
     { name: 'PAE', options: { metric: 'PAE' }, result: 0.816, delta: 0.001 },
     { name: 'PSNR', options: { metric: 'PSNR' }, result: 22.607, delta: 0.001 },
     { name: 'PHASH', options: { metric: 'PHASH' }, result: 7.663, delta: 0.001 },
