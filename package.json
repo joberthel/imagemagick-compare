@@ -1,6 +1,6 @@
 {
   "name": "imagemagick-compare",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "description": "Compare images with NodeJS using ImageMagick's Magick++",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -19,21 +19,21 @@
   },
   "license": "MIT",
   "dependencies": {
-    "nan": "^2.16.0"
+    "nan": "^2.17.0"
   },
   "devDependencies": {
-    "@types/chai": "^4.3.3",
+    "@types/chai": "^4.3.4",
     "@types/chai-as-promised": "^7.1.5",
-    "@types/mocha": "^9.1.1",
-    "@types/node": "^18.7.16",
-    "chai": "^4.3.6",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "^18.13.0",
+    "chai": "^4.3.7",
     "chai-as-promised": "^7.1.1",
     "codecov": "^3.8.3",
-    "mocha": "^10.0.0",
-    "mocha-junit-reporter": "^2.0.2",
+    "mocha": "^10.2.0",
+    "mocha-junit-reporter": "^2.2.0",
     "nyc": "^15.1.0",
     "ts-mocha": "^10.0.0",
-    "typescript": "^4.8.3"
+    "typescript": "^4.9.5"
   },
   "keywords": [
     "imagemagick",
